@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deque.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: gshim <gshim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 11:56:10 by gshim             #+#    #+#             */
-/*   Updated: 2022/02/06 19:44:48 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/08 21:51:34 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_deque
 {
 	int			*content;
 	int			size;
+	int			capacity;
 	int			*front;
 	int			*back;
 }	t_deque;

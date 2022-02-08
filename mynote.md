@@ -56,3 +56,39 @@ libft의 리스트구조를 이용하여 명령어 리스트를 담는 작업을
 - A를 종료하는지 B를 종료하는지 구분하기 위해 각각 함수를 만들거나 이를 구분하는
 	인자를 넣어서 해결가능
 - 단, 명령어를 수행할때 opcode를 추가할 방법을 모색해야함
+
+
+- input에서 실행인자의 개수를 파악하고 덱을 선언해야한다.
+
+A 2 1 3 6 5 8
+B
+
+A_to_B, size = 6 => depth = 0이기 때문에 rrA필요없음
+pivot = 3
+A 6 5 8
+B 3 1 2
+
+	A_to_B, size = 3
+	pivot = 5
+	A 8
+	B 3 1 2 5 6
+
+		A_to_B, size = 1 return;
+
+		B_to_A, size = 2, twoB(), sort->pa process
+		A 8 6 5
+		B 3 1 2
+
+	B_to_A, size = 3
+	pivot = 2
+	A 8 6 5 3
+	B 1 2
+
+		A_to_B, size = 1 return;
+
+		B_to_A, size = 2, twoB(), sort->pa process
+		A 8 6 5 3 2 1
+		B
+
+A_to_B :
+B_to_A :

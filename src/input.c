@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: gshim <gshim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 19:09:59 by gshim             #+#    #+#             */
-/*   Updated: 2022/02/07 17:37:04 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/08 21:55:53 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int terminate(t_ps *ps){
 	exit(1);
 }
 
-int input(t_ps *ps, char *argv){
+int myinput(int argc, char *argv[]){
 	int i;
 	char ** temp;
 
@@ -59,6 +59,21 @@ int input(t_ps *ps, char *argv){
 	i = -1;
 	while(temp[++i]){
 		//printf("[%s]\n", temp[i]);
+		deq_push_back(ps->A, ft_atoi(temp[i]));
+	}
+	free(temp);
+	return (0);
+}
+
+int input(t_ps *ps, char *argv){
+	int i;
+	char ** temp;
+
+	temp = ft_split(argv, ' ');
+	if (!temp)
+		return (-1);
+	i = -1;
+	while(temp[++i]){
 		deq_push_back(ps->A, ft_atoi(temp[i]));
 	}
 	free(temp);

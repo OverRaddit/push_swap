@@ -19,21 +19,18 @@ void A_to_B(t_ps *ps, int size)
 	int i;
 
 	count = 0;
-	// 현재 옮겨야 될 원소의 수가 3이하.
-	if(size <= 3)
+	if(ps->A->size == 3 && size == 3)
+		threeA(ps, *(ps->A->back), *(ps->A->back + 1), *(ps->A->back + 2));
+	if(size == 2)
 	{
-		three(ps, *(ps->A->back), *(ps->A->back + 1), *(ps->A->back + 2));
-		return ;
+		//three(ps, *(ps->A->back), *(ps->A->back + 1), *(ps->A->back + 2));
+		twoA(ps, *(ps->A->back), *(ps->A->back + 1));
 	}
 
 	//현재 정렬이 되어있다면 리턴한다.
 	if (size == 1 || isDescending(ps->A->content + ps->A->size - size, size)){
 		return ;
 	}
-
-
-	// if (size == 1)
-	// 	return ;
 
 	// 새로운 피벗값을 잡는다.
 	pivot = getPivot(ps, ps->A->content + ps->A->size - size, size);
@@ -45,17 +42,21 @@ void A_to_B(t_ps *ps, int size)
 		if(pivot < *(ps->A->back))	// 피벗 초과 ->남김, 피벗이하 -> 이사
 		{
 			r(ps->A);
-			ft_lstadd_back(&ps->opcode, ft_lstnew("rA")); // 연산자 우선순위 -> > &
+			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rA"))); // 연산자 우선순위 -> > &
 			count++;
 		}
 		else{
 			p(ps->A, ps->B);
-			ft_lstadd_back(&ps->opcode, ft_lstnew("pB")); // 연산자 우선순위 -> > &
+			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("pB"))); // 연산자 우선순위 -> > &
 		}
 	}
 	temp = count;
-	while(count--)
+	printf("%d, %d\n", ps->A->size, size);
+	// DEPTH = 0일때 RRA는 필요없음.
+	while(count-- && ps->A->size+ps->B->size != size){
 		rr(ps->A);
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rrA")));
+	}
 
 	// 디버깅
 	print_deque(ps->A);
@@ -74,28 +75,21 @@ void B_to_A(t_ps *ps, int size)
 	int i;
 
 	count = 0;
-	// if(size <= 3)
-	// {
-	// 	three(ps, ps->B->content[2], ps->B->content[1], ps->B->content[0]);
-	// 	return ;
-	// }
-	// 현재 정렬이 되어있다면 리턴한다.
+	if(size == 2)
+	{
+		//three(ps, ps->B->content[2], ps->B->content[1], ps->B->content[0]);
+		twoB(ps, *(ps->B->back), *(ps->B->back + 1));
+	}
+	//현재 정렬이 되어있다면 리턴한다.
 	if (size == 1 || isAscending(ps->B->content + ps->B->size - size, size))
 	{
 		i = -1;
 		while(++i < size){
 			p(ps->B, ps->A);
-			ft_lstadd_back(&ps->opcode, ft_lstnew("pA"));
+			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("pA")));
 		}
 		return;
 	}
-
-	// if (size == 1)
-	// {
-	// 	p(ps->B, ps->A);
-	// 	ft_lstadd_back(&ps->opcode, ft_lstnew("pA"));
-	// 	return ;
-	// }
 
 	pivot = getPivot(ps, ps->B->content + ps->B->size - size, size);
 	printf("B's pivot : %d \n", pivot);
@@ -105,17 +99,19 @@ void B_to_A(t_ps *ps, int size)
 		if(pivot >= *(ps->B->back))
 		{
 			r(ps->B);
-			ft_lstadd_back(&ps->opcode, ft_lstnew("rB"));
+			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rB")));
 			count++;
 		}
 		else{
 			p(ps->B, ps->A);
-			ft_lstadd_back(&ps->opcode, ft_lstnew("pA"));
+			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("pA")));
 		}
 	}
 	temp = count;
-	while(count--)
+	while(count--){
 		rr(ps->B);
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rrB")));
+	}
 
 	// 디버깅
 	print_deque(ps->A);

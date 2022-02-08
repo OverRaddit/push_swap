@@ -6,7 +6,7 @@ NAME = push_swap
 #B_NAME = bonus_so_long
 
 SRCS_DIR = ./src
-SRCS = src/push_swap.c src/main.c src/input.c
+SRCS = src/push_swap.c src/main.c src/input.c src/sort.c
 #SRCS_BONUS = src/bonus_so_long.c
 OBJS = $(SRCS:.c=.o)
 #BONUS_OBJS = $(SRCS_BONUS:.c=.o)

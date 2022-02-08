@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deque.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: gshim <gshim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 17:16:22 by gshim             #+#    #+#             */
-/*   Updated: 2022/02/06 19:44:45 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/08 21:54:02 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,24 @@ t_deque		*deq_new(int n)
 	ret = malloc(sizeof(t_deque));
 	ret->size = 0;
 	ret->content = malloc(sizeof(int) * n);
+	ret->capacity = n;
 	ret->front = 0;
 	ret->back = 0;
 	return (ret);
+}
+
+void		deq_extend(t_deque *deq)
+{
+	int *ret;
+	int i;
+
+	ret = malloc(sizeof(deq->size * 2));
+	i = -1;
+	while (++i)
+		ret[i] = deq->content[i];
+	free(deq->content);
+	deq->content = ret;
+	deq->capacity *= 2;
 }
 
 void		deq_clear(t_deque *deq)
@@ -34,6 +49,8 @@ void		deq_push_back(t_deque *deq, int n)
 {
 	int idx;
 
+	if (deq->size == deq->capacity)
+		deq_extend(deq);
 	idx = deq->size;
 	deq->content[idx] = n;
 	if(deq->size == 0)
@@ -50,6 +67,8 @@ void		deq_push_front(t_deque *deq, int n)
 {
 	int i;
 
+	if (deq->size == deq->capacity)
+		deq_extend(deq);
 	i = deq->size - 1;
 	while(--i >= 0)
 		deq->content[i] = deq->content[i-1];

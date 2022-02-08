@@ -3,21 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: gshim <gshim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:09:08 by gshim             #+#    #+#             */
-/*   Updated: 2022/02/08 14:01:23 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/08 21:57:40 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void ps_init(t_ps *ps, int N)
+void ps_init(t_ps *ps)
 {
-	ps->A = deq_new(N - 1);
-	ps->B = deq_new(N - 1);
+	// N-1 x
+	ps->A = deq_new(1);
+	ps->B = deq_new(1);
 	ps->pivot = 0;
-	//ps->opcode = ft_lstnew("Head"); 없어도 add_back가능할것같은데?
+	ps->opcode = ft_lstnew(ft_strdup("Head"));
 }
 
 void test(t_ps *ps){
@@ -50,13 +51,28 @@ void test(t_ps *ps){
 
 int	main(int argc, char *argv[]){
 	int i;
+	//int j;
 	t_ps *ps;
 	int ret;
+	//char **temp;
 
-	// 구조체 초기화
 	ps = malloc(sizeof(t_ps)); // 예외처리
-	ps_init(ps, argc - 1);
+	ps_init(ps);
+	// temp = malloc(sizeof(char*) * (argc-1));
+	// i = 0;
+	// while(++i < argc)
+	// {
+	// 	temp = ft_split(argv[i], ' ');
+	// 	j = -1;
+	// 	while(temp[++j])
+	// 		(ps->size)++;
+	// 	free(temp);
+	// }
+	// free(temp);
+	// printf("size: %d\n", ps->size);
 
+
+	// INPUT
 	i = 0;
 	while(++i < argc)
 	{
@@ -64,18 +80,14 @@ int	main(int argc, char *argv[]){
 		if (ret == -1)
 			return (-1);
 	}
-	//print_deque(ps->A);
+	print_deque(ps->A);
 
 	// algorithm
 	A_to_B(ps, ps->A->size);
 
-	//test(ps);
-
 	// 디버깅
 	print_deque(ps->A);
 	print_deque(ps->B);
-
-	//
 	t_list *lst = ps->opcode;
 	i = 1;
 	while (lst)
