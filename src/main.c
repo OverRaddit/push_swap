@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gshim <gshim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:09:08 by gshim             #+#    #+#             */
-/*   Updated: 2022/02/04 20:51:59 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/08 14:01:23 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,8 @@ void ps_init(t_ps *ps, int N)
 	ps->A = deq_new(N - 1);
 	ps->B = deq_new(N - 1);
 	ps->pivot = 0;
-	//ps->opcode = ft_lst
+	//ps->opcode = ft_lstnew("Head"); 없어도 add_back가능할것같은데?
 }
-
-// A의 back에서부터 size개의 원소를 피벗값을 기준으로 나눈다.
 
 void test(t_ps *ps){
 	// sa
@@ -53,20 +51,40 @@ void test(t_ps *ps){
 int	main(int argc, char *argv[]){
 	int i;
 	t_ps *ps;
+	int ret;
 
 	// 구조체 초기화
 	ps = malloc(sizeof(t_ps)); // 예외처리
 	ps_init(ps, argc - 1);
 
-	//실행인자 a에 넣기(같은 숫자 거르는 예외처리 필요)
 	i = 0;
 	while(++i < argc)
-		deq_push_back(ps->A, ft_atoi(argv[i]));
+	{
+		ret = input(ps, argv[i]);
+		if (ret == -1)
+			return (-1);
+	}
+	//print_deque(ps->A);
 
 	// algorithm
 	A_to_B(ps, ps->A->size);
 
 	//test(ps);
 
-	free(ps);
+	// 디버깅
+	print_deque(ps->A);
+	print_deque(ps->B);
+
+	//
+	t_list *lst = ps->opcode;
+	i = 1;
+	while (lst)
+	{
+		printf("%s\n", (char *)lst->content);
+		lst = lst->next;
+		i++;
+	}
+	printf("%d struction\n", i);
+
+	terminate(ps);
 }

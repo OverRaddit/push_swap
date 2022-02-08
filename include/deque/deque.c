@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deque.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gshim <gshim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 17:16:22 by gshim             #+#    #+#             */
-/*   Updated: 2022/02/04 16:53:57 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/06 19:44:45 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@ t_deque		*deq_new(int n)
 	ret->front = 0;
 	ret->back = 0;
 	return (ret);
+}
+
+void		deq_clear(t_deque *deq)
+{
+	free(deq->content);
+	free(deq);
 }
 
 void		deq_push_back(t_deque *deq, int n)

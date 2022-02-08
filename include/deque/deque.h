@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deque.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gshim <gshim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 11:56:10 by gshim             #+#    #+#             */
-/*   Updated: 2022/01/22 18:02:49 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/06 19:44:48 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_deque
 	int			*back;
 }	t_deque;
 t_deque		*deq_new(int n);
+void		deq_clear(t_deque *deq);
 void		deq_push_back(t_deque *deq, int n);
 void		deq_push_front(t_deque *deq, int n);
 void		deq_pop_back(t_deque *deq);
