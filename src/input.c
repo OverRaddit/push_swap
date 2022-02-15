@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: gshim <gshim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 19:09:59 by gshim             #+#    #+#             */
-/*   Updated: 2022/02/09 23:45:04 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/15 14:56:23 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
+#include "deque.h"
 
 static int is_spacenum(char *input)
 {

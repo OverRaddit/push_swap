@@ -1,5 +1,6 @@
 
 #include "push_swap.h"
+#include "deque.h"
 
 void print_deque(t_deque *src){
 	printf("===========================\n");
@@ -10,11 +11,21 @@ void print_deque(t_deque *src){
 	printf("\n");
 }
 
+t_list	*my_lstnew(void *content)
+{
+	t_list	*new;
 
-void A_to_B(t_ps *ps, int size)
+	new = (t_list *)malloc(sizeof(t_list));
+	if (!new)
+		return (NULL);
+	new->content = content;
+	new->next = 0;
+	return (new);
+}
+
+void A_to_B(t_ps *ps, int size, int depth)
 {
 	int count;
-	int temp;
 	int pivot;
 	int i;
 
@@ -24,7 +35,7 @@ void A_to_B(t_ps *ps, int size)
 	if(size == 2)
 	{
 		//three(ps, *(ps->A->back), *(ps->A->back + 1), *(ps->A->back + 2));
-		twoA(ps, *(ps->A->back), *(ps->A->back + 1));
+		twoA(ps, *(ps->A->back), *(ps->A->back - 1));
 	}
 
 	//현재 정렬이 되어있다면 리턴한다.
@@ -32,58 +43,47 @@ void A_to_B(t_ps *ps, int size)
 		return ;
 	}
 
-	// 새로운 피벗값을 잡는다.
-	print_deque(ps->A);
 	pivot = getPivot(ps, ps->A->content + ps->A->size - size, size);
 
-	// printf("After pivot\n");
-	// print_deque(ps->A);
-	// printf("%d \n", ps->A->capacity);
-	// printf("%d \n", ps->A->size);
-	// debug
-		p(ps->A, ps->B);
-	// debug
-	print_deque(ps->A);
-	printf("%d \n", ps->A->capacity);
-	printf("%d \n", ps->A->size);
-
+	printf("A_to_B depth %d\n", depth);
 
 	// size개에 대하여 B로 옮기거나 A에서 회전시킨다.
 	i = -1;
 	while(++i < size)
 	{
+		// 피벗 초과값들은 현재스택에서 뒤로 넘긴다.
 		if(pivot < *(ps->A->back))	// 피벗 초과 ->남김, 피벗이하 -> 이사
 		{
 			r(ps->A);
-			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("ra"))); // 연산자 우선순위 -> > &
+			ft_lstadd_back(&ps->opcode, my_lstnew(ft_strdup("ra")));
 			count++;
 		}
+		// 피벗 이하값들은 반대스택으로 넘긴다.
 		else{
 			p(ps->A, ps->B);
-			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("pb"))); // 연산자 우선순위 -> > &
+			ft_lstadd_back(&ps->opcode, my_lstnew(ft_strdup("pb")));
 		}
 	}
 
-	temp = count;
-	// DEPTH = 0일때 RRA는 필요없음.
-	while(count-- && ps->A->size+ps->B->size != size){
+	// REWIND
+	i = -1;
+	while(++i < count && depth != 0){
 		rr(ps->A);
 		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rra")));
 	}
 
 	// 디버깅
-	print_deque(ps->A);
-	print_deque(ps->B);
+	// print_deque(ps->A);
+	// print_deque(ps->B);
 
 	// 재귀
-	A_to_B(ps, temp);
-	B_to_A(ps, size - temp);
+	A_to_B(ps, count, depth + 1);
+	B_to_A(ps, size - count, depth + 1);
 }
 
-void B_to_A(t_ps *ps, int size)
+void B_to_A(t_ps *ps, int size, int depth)
 {
 	int count;
-	int temp;
 	int pivot;
 	int i;
 
@@ -119,18 +119,18 @@ void B_to_A(t_ps *ps, int size)
 			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("pa")));
 		}
 	}
-	temp = count;
-	while(count--){
+	i = -1;
+	while(++i < count && depth != 1){
 		rr(ps->B);
 		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rrb")));
 	}
 
 	// 디버깅
-	print_deque(ps->A);
-	print_deque(ps->B);
+	// print_deque(ps->A);
+	// print_deque(ps->B);
 
-	A_to_B(ps, size - temp);
-	B_to_A(ps, temp);
+	A_to_B(ps, size - count, depth + 1);
+	B_to_A(ps, count, depth + 1);
 }
 
 
@@ -141,7 +141,8 @@ int getPivot(t_ps *ps, int *arr, int size)
 	int i;
 
 	// 할당
-	sort = malloc(size);
+	sort = malloc(sizeof(int) * size);
+	//sort = malloc(size);
 	if (!sort)
 		terminate(ps);
 	// 복사

@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   sort.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: gshim <gshim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 18:29:39 by gshim             #+#    #+#             */
-/*   Updated: 2022/02/09 21:04:10 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/15 15:47:20 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
+#include "deque.h"
 
 void bubblesort(int *arr, int size)
 {
@@ -80,7 +80,7 @@ void twoA(t_ps *ps, int a, int b)
 	if (a > b)
 	{
 		s(ps->A);
-		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("sA")));
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("sa")));
 	}
 }
 
@@ -89,7 +89,7 @@ void twoB(t_ps *ps, int a, int b)
 	if (a < b)
 	{
 		s(ps->B);
-		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("sB")));
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("sb")));
 	}
 }
 
@@ -98,31 +98,31 @@ void threeA(t_ps *ps, int a, int b, int c)
 	if(a < b && b > c && a < c)
 	{
 		s(ps->A);
-		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("sA")));
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("sa")));
 		r(ps->A);
-		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rA")));
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("ra")));
 	}
 	else if(a > b && b < c && a < c)
 	{
 		s(ps->A);
-		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("pA")));
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("pa")));
 	}
 	else if(a < b && b > c && a > c)
 	{
 		rr(ps->A);
-		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rrA")));
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rra")));
 	}
 	else if(a > b && b < c && a > c)
 	{
 		r(ps->A);
-		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rA")));
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("ra")));
 	}
 	else if(a > b && b > c && a > c)
 	{
 		s(ps->A);
-		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("sA")));
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("sa")));
 		rr(ps->A);
-		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rrA")));
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rra")));
 	}
 }
 

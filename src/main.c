@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: gshim <gshim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:09:08 by gshim             #+#    #+#             */
-/*   Updated: 2022/02/15 13:59:55 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/15 18:09:10 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include "deque.h"
 
 void ps_init(t_ps *ps)
 {
@@ -122,7 +123,7 @@ int	main(int argc, char *argv[]){
 	int i;
 	t_ps *ps;
 
-	ps = malloc(sizeof(t_ps)); // 예외처리
+	ps = (t_ps*)malloc(sizeof(t_ps)); // 예외처리
 	ps_init(ps);
 
 	// INPUT
@@ -131,23 +132,27 @@ int	main(int argc, char *argv[]){
 		input(ps, argv[i]);
 	deq_reverse(ps->A);
 
-	// printf("MAIN\n");
-	// test(ps);
-	// print_deque(ps->A);
-	// printf("%d \n", ps->A->capacity);
-	// printf("%d \n", ps->A->size);
+	print_deque(ps->A);
+	print_deque(ps->B);
 
 	//algorithm
-	A_to_B(ps, ps->A->size);
+	A_to_B(ps, ps->A->size, 0);
 
-	// t_list *lst = ps->opcode->next;
-	// flatten_opcode(ps->opcode);
-	// i = 1;
-	// while (lst)
-	// {
-	// 	printf("%s\n", (char *)lst->content);
-	// 	lst = lst->next;
-	// 	i++;
-	// }
-	// terminate(ps);
+	print_deque(ps->A);
+	print_deque(ps->B);
+
+	t_list *lst = ps->opcode->next;
+	flatten_opcode(ps->opcode);
+	i = 1;
+	while (lst)
+	{
+		printf("%s\n", (char *)lst->content);
+		lst = lst->next;
+		i++;
+	}
+	terminate(ps);
 }
+/*
+ARG="1 2 3 4"; ./push_swap $ARG | ./checker_MAC $ARG
+
+*/

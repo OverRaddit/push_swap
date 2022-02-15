@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deque.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gshim <gshim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 11:56:10 by gshim             #+#    #+#             */
-/*   Updated: 2022/02/15 15:06:03 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/09 18:33:08 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@
 # include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
+//# include ../libft/libft.h;
+
+// typedef struct s_dlist
+// {
+// 	void			*content;
+// 	struct s_list	*next;
+// }	t_dlist;
 
 typedef struct s_deque
 {
