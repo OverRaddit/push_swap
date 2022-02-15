@@ -10,6 +10,7 @@
 			"name": "Debug",
 			"program": "/Users/simgeon-u/Desktop/SEOUL42/push_swap",
 			"args": ["2","1","3","6","5","8"],
+			//"args": ["4 67 3 87 23"],
 			"cwd": "${workspaceFolder}"
 		}
 	]

@@ -3,14 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   sort.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gshim <gshim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 18:29:39 by gshim             #+#    #+#             */
-/*   Updated: 2022/02/08 21:02:06 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/09 21:04:10 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+
+void bubblesort(int *arr, int size)
+{
+	int i;
+	int j;
+	int temp;
+
+	i = -1;
+	while(++i < size - 1)
+	{
+		j = -1;
+		while(++j < size - 1 - i)
+			if(arr[j] > arr[j+1])
+			{
+				temp = arr[j];
+				arr[j] = arr[j+1];
+				arr[j+1] = temp;
+			}
+	}
+}
+
+int isAscending(int *arr, int size)
+{
+	int i;
+
+	i = -1;
+	while(++i < size - 1)
+	{
+		if (arr[i] > arr[i + 1])
+			return 0;
+	}
+	return 1;
+}
+
+int isDescending(int *arr, int size)
+{
+	int i;
+
+	i = -1;
+	while(++i < size - 1)
+	{
+		if (arr[i] < arr[i + 1])
+			return 0;
+	}
+	return 1;
+}
 
 void minimum_sort(t_ps *ps, int n, char c)
 {

@@ -19,8 +19,8 @@ void A_to_B(t_ps *ps, int size)
 	int i;
 
 	count = 0;
-	if(ps->A->size == 3 && size == 3)
-		threeA(ps, *(ps->A->back), *(ps->A->back + 1), *(ps->A->back + 2));
+	// if(ps->A->size == 3 && size == 3)
+	// 	threeA(ps, *(ps->A->back), *(ps->A->back + 1), *(ps->A->back + 2));
 	if(size == 2)
 	{
 		//three(ps, *(ps->A->back), *(ps->A->back + 1), *(ps->A->back + 2));
@@ -33,8 +33,21 @@ void A_to_B(t_ps *ps, int size)
 	}
 
 	// 새로운 피벗값을 잡는다.
+	print_deque(ps->A);
 	pivot = getPivot(ps, ps->A->content + ps->A->size - size, size);
-	printf("A's pivot : %d \n", pivot);
+
+	// printf("After pivot\n");
+	// print_deque(ps->A);
+	// printf("%d \n", ps->A->capacity);
+	// printf("%d \n", ps->A->size);
+	// debug
+		p(ps->A, ps->B);
+	// debug
+	print_deque(ps->A);
+	printf("%d \n", ps->A->capacity);
+	printf("%d \n", ps->A->size);
+
+
 	// size개에 대하여 B로 옮기거나 A에서 회전시킨다.
 	i = -1;
 	while(++i < size)
@@ -42,20 +55,20 @@ void A_to_B(t_ps *ps, int size)
 		if(pivot < *(ps->A->back))	// 피벗 초과 ->남김, 피벗이하 -> 이사
 		{
 			r(ps->A);
-			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rA"))); // 연산자 우선순위 -> > &
+			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("ra"))); // 연산자 우선순위 -> > &
 			count++;
 		}
 		else{
 			p(ps->A, ps->B);
-			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("pB"))); // 연산자 우선순위 -> > &
+			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("pb"))); // 연산자 우선순위 -> > &
 		}
 	}
+
 	temp = count;
-	printf("%d, %d\n", ps->A->size, size);
 	// DEPTH = 0일때 RRA는 필요없음.
 	while(count-- && ps->A->size+ps->B->size != size){
 		rr(ps->A);
-		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rrA")));
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rra")));
 	}
 
 	// 디버깅
@@ -86,31 +99,30 @@ void B_to_A(t_ps *ps, int size)
 		i = -1;
 		while(++i < size){
 			p(ps->B, ps->A);
-			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("pA")));
+			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("pa")));
 		}
 		return;
 	}
 
 	pivot = getPivot(ps, ps->B->content + ps->B->size - size, size);
-	printf("B's pivot : %d \n", pivot);
 	i = -1;
 	while(++i < size)
 	{
 		if(pivot >= *(ps->B->back))
 		{
 			r(ps->B);
-			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rB")));
+			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rb")));
 			count++;
 		}
 		else{
 			p(ps->B, ps->A);
-			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("pA")));
+			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("pa")));
 		}
 	}
 	temp = count;
 	while(count--){
 		rr(ps->B);
-		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rrB")));
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rrb")));
 	}
 
 	// 디버깅
@@ -124,34 +136,30 @@ void B_to_A(t_ps *ps, int size)
 
 int getPivot(t_ps *ps, int *arr, int size)
 {
-	int i;
-	int j;
-	int temp;
 	int *sort;
+	int ret;
+	int i;
 
 	// 할당
 	sort = malloc(size);
-	if (!sort)	// 이대로 -1을 반환하면 안된다.,  EXIT함수
+	if (!sort)
 		terminate(ps);
-
 	// 복사
 	i = -1;
 	while (++i < size)
 		sort[i] = arr[i];
-
 	// 버블소트
-	i = -1;
-	while(++i < size - 1)
-	{
-		j = -1;
-		while(++j < size - 1 - i)
-			if(sort[j] > sort[j+1])
-			{
-				temp = sort[j];
-				sort[j] = sort[j+1];
-				sort[j+1] = temp;
-			}
-	}
+	bubblesort(sort, size);
+	ret = sort[(size / 2) - (size % 2 == 0)];
 	free(sort);
-	return sort[(size / 2) - (size % 2 == 0)];
+	return ret;
 }
+
+
+/*
+command
+
+ARG="4 67 3 87 23"; ./push_swap $ARG | wc -l
+ARG="4 67 3 87 23"; ./push_swap $ARG | ./checker_OS $ARG
+
+*/

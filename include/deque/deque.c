@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   deque.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gshim <gshim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 17:16:22 by gshim             #+#    #+#             */
-/*   Updated: 2022/02/08 21:54:02 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/15 14:02:18 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "deque.h"
+#include <stdio.h>
+
+void print_deq(t_deque *src){
+	printf("===========================\n");
+	for(int i=0;i<src->size;i++)
+		printf("%d ",src->content[i]);
+	printf("\n");
+	printf("===========================\n");
+	printf("\n");
+}
 
 t_deque		*deq_new(int n)
 {
@@ -30,12 +40,14 @@ void		deq_extend(t_deque *deq)
 	int *ret;
 	int i;
 
-	ret = malloc(sizeof(deq->size * 2));
+	ret = malloc(sizeof(int) * deq->capacity * 2);
 	i = -1;
-	while (++i)
+	while (++i < deq->size)
 		ret[i] = deq->content[i];
 	free(deq->content);
 	deq->content = ret;
+	deq->front = deq->content;
+	deq->back = &(deq->content[deq->size - 1]);
 	deq->capacity *= 2;
 }
 
@@ -45,21 +57,45 @@ void		deq_clear(t_deque *deq)
 	free(deq);
 }
 
+void		deq_reverse(t_deque *deq)
+{
+	int i;
+	int temp;
+
+	i = -1;
+	while(++i < deq->size / 2)
+	{
+		temp = deq->content[i];
+		deq->content[i] = deq->content[deq->size - 1 - i];
+		deq->content[deq->size - 1 - i] = temp;
+	}
+}
+
 void		deq_push_back(t_deque *deq, int n)
 {
 	int idx;
 
+	// printf("PushBack before\n");
+	// printf("%d \n",deq->capacity);
+	// printf("%d \n",deq->size);
+
 	if (deq->size == deq->capacity)
 		deq_extend(deq);
 	idx = deq->size;
-	deq->content[idx] = n;
+
+	// printf("PushBack before\n");
+	// printf("%d \n",deq->capacity);
+	// printf("%d \n",deq->size);
+	// printf("idx = %d\n", idx);
+	deq->content[idx] = n;	// 이게 터지는 이유가 뭘까?
+	//printf("n = %d\n", n);
+
 	if(deq->size == 0)
 	{
 		deq->front = deq->content;
 		deq->back = deq->content;
 	}
 	deq->size++;
-	//deq->back = deq->back + 1; -> 이거는 0으로 저장되던데 왜그러지?
 	deq->back = &(deq->content[deq->size - 1]);
 }
 
@@ -69,9 +105,9 @@ void		deq_push_front(t_deque *deq, int n)
 
 	if (deq->size == deq->capacity)
 		deq_extend(deq);
-	i = deq->size - 1;
+	i = deq->size;
 	while(--i >= 0)
-		deq->content[i] = deq->content[i-1];
+		deq->content[i+1] = deq->content[i];
 	deq->content[0] = n;
 	deq->size++;
 	deq->back = deq->back + 1;
@@ -85,7 +121,8 @@ void		deq_pop_back(t_deque *deq)
 		deq->front = 0;
 	}
 	else
-		deq->back = deq->back - 1;
+		//deq->back = deq->back - 1;
+		deq->back = &(deq->content[deq->size - 2]);
 	deq->size--;
 }
 
@@ -112,8 +149,13 @@ void		p(t_deque *src, t_deque *dest)
 	int temp;
 
 	temp = *(src->back);
+
 	deq_pop_back(src);
+
 	deq_push_back(dest, temp);
+	// print_deq(src);
+	// printf("%d \n", src->capacity);
+	// printf("%d \n", src->size);
 }
 
 void		s(t_deque *A)
