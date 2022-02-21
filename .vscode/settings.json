@@ -1,5 +1,10 @@
 {
 	"files.associations": {
-		"algorithm": "c"
+		"algorithm": "c",
+		"__split_buffer": "c",
+		"array": "c",
+		"string_view": "c",
+		"vector": "c",
+		"deque.h": "c"
 	}
 }

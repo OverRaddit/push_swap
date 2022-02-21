@@ -3,150 +3,93 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gshim <gshim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:09:08 by gshim             #+#    #+#             */
-/*   Updated: 2022/02/15 18:09:10 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/20 18:32:57 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include "deque.h"
 
-void ps_init(t_ps *ps)
+void	ps_init(t_ps *ps)
 {
-	// N-1 x
 	ps->A = deq_new(10);
 	ps->B = deq_new(10);
-	ps->pivot = 0;
 	ps->opcode = ft_lstnew(ft_strdup("Head"));
 }
 
-void test(t_ps *ps){
-	// sa
-	s(ps->A);
-	print_deque(ps->A);
-	// sb
-
-	// ss
-
-	// pa
-
-	// pb
-	p(ps->A, ps->B);
-	print_deque(ps->A);
-	// ra
-	r(ps->A);
-	print_deque(ps->A);
-	// rra
-
-	// rb
-
-	// rrb
-
-	// rr
-	rr(ps->A);
-	print_deque(ps->A);
-	// rrr
-
-	// flatten
-	t_list *lst = ps->opcode;
-	ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("ra")));
-	ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rb")));
-	ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("sa")));
-	ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rb")));
-	printf("Flatten BEFORE");
-	while(lst){
-		printf("%s \n", (char*)lst->content);
-		lst = lst->next;
-	}
-	flatten_opcode(ps->opcode);
-	printf("Flatten AFTER");
-
-	lst = ps->opcode;
-	while(lst){
-		printf("%s \n", (char*)lst->content);
-		lst = lst->next;
-	}
-}
-
-void replace_opcode(t_list *lst, char opcode[5])
+void	replace_opcode(t_list *lst, char opcode[5])
 {
-	t_list *next;
+	t_list	*next;
 
 	// 새로운 명령어 넣기
 	free(lst->content);
 	lst->content = ft_strdup(opcode);
-
 	// 뒷 노드의 다음노드를 앞노드의 다음노드로 넣을 것이다.
 	next = lst->next->next;
 	ft_lstdelone(lst->next, free);
 	lst->next = next;
 }
 
-void flatten_opcode(t_list *lst)
+void	flatten_opcode(t_list *lst)
 {
-	while(lst->next)
+	while (lst->next)
 	{
-		if (!ft_strncmp(lst->content, "ra", 2) && !ft_strncmp(lst->next->content, "rb", 2))
+		if (!ft_strncmp(lst->content, "ra", 2)
+			&& !ft_strncmp(lst->next->content, "rb", 2))
 			replace_opcode(lst, "rr");
-		if (!ft_strncmp(lst->content, "rb", 2) && !ft_strncmp(lst->next->content, "ra", 2))
+		if (!ft_strncmp(lst->content, "rb", 2)
+			&& !ft_strncmp(lst->next->content, "ra", 2))
 			replace_opcode(lst, "rr");
-
-		if (!ft_strncmp(lst->content, "sa", 2) && !ft_strncmp(lst->next->content, "sb", 2))
-			replace_opcode(lst, "rr");
-		if (!ft_strncmp(lst->content, "sb", 2) && !ft_strncmp(lst->next->content, "sa", 2))
-			replace_opcode(lst, "rr");
-
-		if (!ft_strncmp(lst->content, "rra", 3) && !ft_strncmp(lst->next->content, "rrb", 3))
+		if (!ft_strncmp(lst->content, "sa", 2)
+			&& !ft_strncmp(lst->next->content, "sb", 2))
+			replace_opcode(lst, "ss");
+		if (!ft_strncmp(lst->content, "sb", 2)
+			&& !ft_strncmp(lst->next->content, "sa", 2))
+			replace_opcode(lst, "ss");
+		if (!ft_strncmp(lst->content, "rra", 3)
+			&& !ft_strncmp(lst->next->content, "rrb", 3))
 			replace_opcode(lst, "rrr");
-		if (!ft_strncmp(lst->content, "rrb", 3) && !ft_strncmp(lst->next->content, "rra", 3))
+		if (!ft_strncmp(lst->content, "rrb", 3)
+			&& !ft_strncmp(lst->next->content, "rra", 3))
 			replace_opcode(lst, "rrr");
-
 		lst = lst->next;
 	}
 }
 
-int terminate(t_ps *ps)
+int	terminate(t_ps *ps)
 {
 	deq_clear(ps->A);
-	//printf("A스택을 free합니다.\n");
 	deq_clear(ps->B);
-	//printf("B스택을 free합니다.\n");
 	ft_lstclear(&(ps->opcode), free);
-	//printf("opcode free합니다.\n");
-
 	exit(1);
 }
 
-int	main(int argc, char *argv[]){
-	int i;
-	t_ps *ps;
+int	main(int argc, char *argv[])
+{
+	int		i;
+	t_ps	*ps;
+	t_list	*lst;
 
-	ps = (t_ps*)malloc(sizeof(t_ps)); // 예외처리
+	ps = (t_ps *)malloc(sizeof(t_ps)); // 예외처리
 	ps_init(ps);
-
 	// INPUT
 	i = 0;
-	while(++i < argc)
+	while (++i < argc)
 		input(ps, argv[i]);
 	deq_reverse(ps->A);
-
-	print_deque(ps->A);
-	print_deque(ps->B);
-
 	//algorithm
-	A_to_B(ps, ps->A->size, 0);
-
-	print_deque(ps->A);
-	print_deque(ps->B);
-
-	t_list *lst = ps->opcode->next;
+	A_to_B_extend(ps, ps->A->size, 0);
+	// flatten
+	lst = ps->opcode->next;
 	flatten_opcode(ps->opcode);
 	i = 1;
 	while (lst)
 	{
-		printf("%s\n", (char *)lst->content);
+		ft_putstr_fd((char *)lst->content, 1);
+		ft_putstr_fd("\n", 1);
 		lst = lst->next;
 		i++;
 	}

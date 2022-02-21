@@ -121,3 +121,15 @@ sort = malloc(size);
 ->
 sort = malloc(sizeof(int) * size);
 
+# 2/18(금)
+- deque를 외부라이브러리로 둘까? 안두는게 나을 것 같네..!
+
+- r, rr중 유리한 걸 고르는 로직을 추가
+- 2개의 피벗을 잡는 로직 추가.
+- deque에서 memccpy썻으면 더 쉬웠을수도?
+
+# 2/20(ㅇㅣㄹ)
+
+- Rewind : r -> rr
+- Rewind : rrr + rr ㅇㅔ서 두 while	사이 idx 조정.
+- flatten_code : sa,sb or sb,sa를 rr로 잘못 압축함.

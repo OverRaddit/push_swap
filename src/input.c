@@ -3,43 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gshim <gshim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 19:09:59 by gshim             #+#    #+#             */
-/*   Updated: 2022/02/15 14:56:23 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/20 18:25:05 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include "deque.h"
 
-static int is_spacenum(char *input)
+static int	is_spacenum(char *input)
 {
-	int i;
+	int	i;
 
 	i = -1;
-	while(input[++i])
+	while (input[++i])
 	{
 		if ('0' <= input[i] && input[i] <= '9')
-			continue;
-		else if(input[i] == ' ' || input[i] == '-')
-			continue;
+			continue ;
+		else if (input[i] == ' ' || input[i] == '-')
+			continue ;
 		else
 			return (0);
 	}
 	return (1);
 }
 
-int input(t_ps *ps, char *argv)
+int	input(t_ps *ps, char *argv)
 {
-	int i;
-	char ** temp;
+	int		i;
+	char	**temp;
 
 	temp = ft_split(argv, ' ');
 	if (!temp)
 		terminate(ps);
 	i = -1;
-	while(temp[++i])
+	while (temp[++i])
 	{
 		// 공백,부호,숫자가 아닌 문자가 오거나
 		// 길이가 0인 문자열인 경우 ERROR
