@@ -6,68 +6,67 @@
 /*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:46:52 by gshim             #+#    #+#             */
-/*   Updated: 2022/02/20 21:00:16 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/21 17:41:12 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include "deque.h"
 
-void	A_to_B_move(t_ps *ps, int size, int Spivot, int Lpivot, int *ra, int *rb)
+void	A_to_B_move(t_ps *ps, int size, t_info *info)
 {
 	int	i;
 
 	i = -1;
 	while (++i < size)
 	{
-		if (Lpivot < *(ps->A->back))
+		if (info->Lpivot < *(ps->A->back))
 		{
 			r(ps->A);
 			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("ra")));
-			(*ra)++;
+			(info->ra)++;
 		}
 		else
 		{
 			p(ps->A, ps->B);
 			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("pb")));
-			if (Spivot < *(ps->B->back))
+			if (info->Spivot < *(ps->B->back))
 			{
 				r(ps->B);
 				ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rb")));
-				(*rb)++;
+				(info->rb)++;
 			}
 		}
 	}
 }
 
-void	B_to_A_move(t_ps *ps, int size, int Spivot, int Lpivot, int *ra, int *rb)
+void	B_to_A_move(t_ps *ps, int size, t_info *info)
 {
 	int	i;
 
 	i = -1;
 	while (++i < size)
 	{
-		if (Spivot >= *(ps->B->back))
+		if (info->Spivot >= *(ps->B->back))
 		{
 			r(ps->B);
 			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rb")));
-			(*rb)++;
+			(info->rb)++;
 		}
 		else
 		{
 			p(ps->B, ps->A);
 			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("pa")));
-			if (Lpivot >= *(ps->A->back))
+			if (info->Lpivot >= *(ps->A->back))
 			{
 				r(ps->A);
 				ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("ra")));
-				(*ra)++;
+				(info->ra)++;
 			}
 		}
 	}
 }
 
-//-146 168 256 -972 135 -15 -657
 void	rewind(t_ps *ps, int ra, int rb)
 {
 	int	i;
@@ -94,4 +93,36 @@ void	rewind(t_ps *ps, int ra, int rb)
 		}
 		i++;
 	}
+}
+
+int	A_to_B_base(t_ps *ps, int size)
+{
+	if (ps->A->size == 3 && size == 3)
+		threeA(ps, *(ps->A->back), *(ps->A->back - 1), *(ps->A->back - 2));
+	if (size == 2)
+		twoA(ps, *(ps->A->back), *(ps->A->back - 1));
+	if (size == 1 || isDescending(ps->A->content + ps->A->size - size, size))
+		return (1);
+	return (0);
+}
+
+int	B_to_A_base(t_ps *ps, int size)
+{
+	int	i;
+
+	if (ps->B->size == 3 && size == 3)
+		threeB(ps, *(ps->B->back), *(ps->B->back - 1), *(ps->B->back - 2));
+	if (size == 2)
+		twoB(ps, *(ps->B->back), *(ps->B->back - 1));
+	if (size == 1 || isAscending(ps->B->content + ps->B->size - size, size))
+	{
+		i = -1;
+		while (++i < size)
+		{
+			p(ps->B, ps->A);
+			ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("pa")));
+		}
+		return (1);
+	}
+	return (0);
 }

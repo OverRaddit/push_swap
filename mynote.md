@@ -133,3 +133,18 @@ sort = malloc(sizeof(int) * size);
 - Rewind : r -> rr
 - Rewind : rrr + rr ㅇㅔ서 두 while	사이 idx 조정.
 - flatten_code : sa,sb or sb,sa를 rr로 잘못 압축함.
+
+
+# 2/21(MON)
+
+더 추가할만한 것들
+- 입력시 마이너스의 연속이 들어오면 atoi에서 0으로 반환할텐데 이를 어떡할까 [처리완료]
+- 입력시 같은 숫자가 들어오면 ERROR출력하는 로직 필요 [처리완료]
+- malloc 실패로직
+	-> 현재 동적으로 공간이 모자라면 추가하는 방식인데... 입출력 방식을 바꿔볼까? [처리완료] -> [그냥 exit]
+- depth parameter 제거할까? [처리완료]
+
+/*
+ARG="1 2 3 4"; ./push_swap $ARG | ./checker_MAC $ARG
+
+*/

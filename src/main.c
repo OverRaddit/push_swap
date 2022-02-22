@@ -6,7 +6,7 @@
 /*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:09:08 by gshim             #+#    #+#             */
-/*   Updated: 2022/02/20 18:32:57 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/22 15:16:37 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	terminate(t_ps *ps)
 	deq_clear(ps->A);
 	deq_clear(ps->B);
 	ft_lstclear(&(ps->opcode), free);
+	free(ps);
 	exit(1);
 }
 
@@ -74,14 +75,22 @@ int	main(int argc, char *argv[])
 	t_list	*lst;
 
 	ps = (t_ps *)malloc(sizeof(t_ps)); // 예외처리
+	if (!ps)
+		return (-1);
 	ps_init(ps);
 	// INPUT
 	i = 0;
 	while (++i < argc)
 		input(ps, argv[i]);
+	// 중복체크 로직
+	if (is_duplicate(ps, ps->A->content, ps->A->size))
+	{
+		ft_putstr_fd("ERROR\n", 1);
+		terminate(ps);
+	}
 	deq_reverse(ps->A);
 	//algorithm
-	A_to_B_extend(ps, ps->A->size, 0);
+	A_to_B_extend(ps, ps->A->size);
 	// flatten
 	lst = ps->opcode->next;
 	flatten_opcode(ps->opcode);
@@ -95,7 +104,4 @@ int	main(int argc, char *argv[])
 	}
 	terminate(ps);
 }
-/*
-ARG="1 2 3 4"; ./push_swap $ARG | ./checker_MAC $ARG
 
-*/

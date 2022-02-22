@@ -6,7 +6,7 @@
 /*   By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 18:29:39 by gshim             #+#    #+#             */
-/*   Updated: 2022/02/20 18:38:01 by gshim            ###   ########.fr       */
+/*   Updated: 2022/02/21 17:08:38 by gshim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,20 +79,6 @@ void	twoB(t_ps *ps, int a, int b)
 	}
 }
 
-void	minimum_sort(t_ps *ps, int n, char c)
-{
-	if (c == 'A')
-	{
-		if (n == 2)
-			twoA(ps, *(ps->A->back), *(ps->A->back + 1));
-	}
-	else if (c == 'B')
-	{
-		if (n == 2)
-			twoB(ps, *(ps->B->back), *(ps->B->back + 1));
-	}
-}
-
 void	threeA(t_ps *ps, int a, int b, int c)
 {
 	if (a < b && b > c && a < c)
@@ -126,4 +112,35 @@ void	threeA(t_ps *ps, int a, int b, int c)
 	}
 }
 
-// void threeB(t_ps *ps, int a, int b, int c)
+void threeB(t_ps *ps, int a, int b, int c)	// top 3 2 1 bottom
+{
+	if (a < b && b < c && a < c)	// 1 2 3
+	{
+		s(ps->B);
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("sb")));
+		rr(ps->B);
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rrb")));
+	}
+	else if (a < b && b > c && a < c)	// 1 3 2
+	{
+		r(ps->B);
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rb")));
+	}
+	else if (a > b && b < c && a < c)	// 2 1 3
+	{
+		rr(ps->B);
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rrb")));
+	}
+	else if (a < b && b > c && a > c)	// 2 3 1
+	{
+		s(ps->B);
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("sb")));
+	}
+	else if (a > b && b < c && a > c)	// 3 1 2
+	{
+		s(ps->B);
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("sb")));
+		r(ps->B);
+		ft_lstadd_back(&ps->opcode, ft_lstnew(ft_strdup("rb")));
+	}
+}

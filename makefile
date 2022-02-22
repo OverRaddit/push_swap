@@ -1,14 +1,13 @@
 CC = gcc
 #CFLAGS = -Wall -Wextra -Werror -g
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
-#CFLAGS = -Wall -g
 
 NAME = push_swap
 #B_NAME = bonus_so_long
 
 SRCS_DIR = ./src
-SRCS = src/push_swap.c src/main.c src/input.c src/sort.c src/deque.c \
-	src/push_swap2.c
+SRCS = src/push_swap.c src/main.c src/input.c src/sort.c src/instruction.c\
+	src/push_swap2.c src/deque.c src/deque2.c
 #SRCS_BONUS = src/bonus_so_long.c
 OBJS = $(SRCS:.c=.o)
 #BONUS_OBJS = $(SRCS_BONUS:.c=.o)
@@ -40,15 +39,11 @@ all : $(NAME)
 clean :
 	rm -rf $(OBJS)
 	$(MAKE) -C $(LIB_DIR) clean
-#	$(MAKE) -C $(DEQ_DIR) clean
 
 fclean :
 	rm -rf $(NAME) $(OBJS)
 	$(MAKE) -C $(LIB_DIR) fclean
-#	$(MAKE) -C $(DEQ_DIR) fclean
 
 re : fclean all
 
-#bonus : $(LIBFT_LIB) $(B_SERVER)
-
-.PHONY : all clean fclean re bonus
+.PHONY : all clean fclean re
